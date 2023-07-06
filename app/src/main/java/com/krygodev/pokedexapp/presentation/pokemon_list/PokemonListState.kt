@@ -8,6 +8,7 @@ data class PokemonListState(
     val isLoading: Boolean = false,
     val endReached: Boolean = false,
     val isSearching: Boolean = false,
+    val searchQuery: String = "",
     val currentPage: Int = 0,
     val isSearchStarting: Boolean = false,
     val cachedPokemonList: List<PokemonListEntry> = emptyList()

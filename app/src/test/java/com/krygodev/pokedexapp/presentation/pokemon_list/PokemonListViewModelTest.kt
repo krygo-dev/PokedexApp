@@ -40,7 +40,7 @@ class PokemonListViewModelTest {
         coEvery { mockPokemonRepository.getPokemonList(any(), any()) } returns Result.success(pokemonList)
         val prevState = viewModel.state.value
 
-        viewModel.loadPokemonPaginated()
+        viewModel.onEvent(PokemonListEvent.LoadPokemonPaginated)
 
         assertThat(viewModel.state.value.pokemonList).isEqualTo(prevState.pokemonList + pokemonList)
         assertThat(viewModel.state.value.currentPage).isEqualTo(prevState.currentPage + 1)
@@ -53,7 +53,7 @@ class PokemonListViewModelTest {
             Throwable(UNEXPECTED_ERROR)
         )
 
-        viewModel.loadPokemonPaginated()
+        viewModel.onEvent(PokemonListEvent.LoadPokemonPaginated)
 
         assertThat(viewModel.state.value.loadError).isEqualTo(UNEXPECTED_ERROR)
     }

@@ -4,18 +4,20 @@ import com.krygodev.pokedexapp.data.mappers.toPokemon
 import com.krygodev.pokedexapp.data.mappers.toPokemonListEntry
 import com.krygodev.pokedexapp.data.remote.PokemonApi
 import com.krygodev.pokedexapp.domain.model.Pokemon
-import com.krygodev.pokedexapp.domain.model.PokemonListEntry
+import com.krygodev.pokedexapp.domain.model.PokemonResult
 import com.krygodev.pokedexapp.domain.repository.PokemonRepository
 import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
     private val api: PokemonApi
 ): PokemonRepository {
-    override suspend fun getPokemonList(limit: Int, offset: Int): Result<List<PokemonListEntry>> {
+    override suspend fun getPokemonList(limit: Int, offset: Int): Result<PokemonResult> {
         return try {
             val response = api.getPokemonList(limit = limit, offset = offset)
             val pokemonList = response.results.map { it.toPokemonListEntry() }
-            Result.success(pokemonList)
+            Result.success(
+                PokemonResult(count = response.count, pokemonList = pokemonList)
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             Result.failure(e)

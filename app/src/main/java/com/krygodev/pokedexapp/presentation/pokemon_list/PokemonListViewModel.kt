@@ -57,13 +57,16 @@ class PokemonListViewModel @Inject constructor(
             )
 
             result
-                .onSuccess { pokemonList ->
+                .onSuccess { pokemonResult ->
+                    val appendedPokemonList = state.value.pokemonList + pokemonResult.pokemonList
                     _state.update {
                         it.copy(
-                            pokemonList = state.value.pokemonList + pokemonList,
+                            pokemonList = appendedPokemonList,
+                            cachedPokemonList = appendedPokemonList,
                             isLoading = false,
                             loadError = null,
-                            currentPage = state.value.currentPage + 1
+                            currentPage = state.value.currentPage + 1,
+                            endReached = state.value.currentPage * PAGE_SIZE >= pokemonResult.count
                         )
                     }
                 }
@@ -79,10 +82,16 @@ class PokemonListViewModel @Inject constructor(
     }
 
     private fun searchPokemonList(query: String) {
-//        viewModelScope.launch {
-//            if (query.isEmpty()) {
-//
-//            }
-//        }
+        _state.update { it.copy(isSearching = true) }
+
+        if (query.isEmpty() && state.value.isSearching) {
+            _state.update { it.copy(pokemonList = it.cachedPokemonList, isSearching = false) }
+        }
+
+        val filteredList = state.value.cachedPokemonList.filter {
+            it.name.contains(query.trim(), ignoreCase = true)
+        }
+
+        _state.update { it.copy(pokemonList = filteredList) }
     }
 }

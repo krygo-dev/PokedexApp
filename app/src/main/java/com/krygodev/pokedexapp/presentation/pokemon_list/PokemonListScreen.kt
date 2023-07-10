@@ -80,6 +80,19 @@ fun PokemonListScreen(
                 )
             }
 
+            if (state.pokemonList.isEmpty()) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    Text(text = "No results to show.")
+                    Text(text = "Try to load more Pokemons before searching.")
+                }
+            }
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(30.dp)

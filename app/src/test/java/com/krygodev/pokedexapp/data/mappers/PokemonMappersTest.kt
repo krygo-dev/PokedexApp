@@ -1,5 +1,6 @@
 package com.krygodev.pokedexapp.data.mappers
 
+import androidx.compose.ui.graphics.Color
 import com.google.common.truth.Truth.assertThat
 import com.krygodev.pokedexapp.data.model.pokemon_list.Result
 import com.krygodev.pokedexapp.domain.model.PokemonListEntry
@@ -12,7 +13,10 @@ class PokemonMappersTest {
         val testResult = Result(name = "pikachu", url = "https://pokeapi.co/api/v2/pokemon/25/")
         val testPokemonListEntry = PokemonListEntry(
             name = "Pikachu",
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png")
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+            number = 25,
+            dominantColor = Color.Black
+        )
 
         val mapped = testResult.toPokemonListEntry()
 

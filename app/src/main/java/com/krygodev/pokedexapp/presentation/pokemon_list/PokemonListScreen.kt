@@ -32,13 +32,17 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.krygodev.pokedexapp.R
 import com.krygodev.pokedexapp.ui.theme.RobotoCondensed
 
@@ -98,6 +102,7 @@ fun PokemonListScreen(
                 contentPadding = PaddingValues(30.dp)
             ) {
                 items(state.pokemonList) { pokemonListEntry ->
+
                     if (pokemonListEntry == state.pokemonList.last() &&
                         !state.endReached &&
                         !state.isLoading &&
@@ -115,7 +120,14 @@ fun PokemonListScreen(
                             .shadow(5.dp, RoundedCornerShape(10.dp))
                             .clip(RoundedCornerShape(10.dp))
                             .aspectRatio(1f)
-                            .background(Color.LightGray)
+                            .background(
+                                Brush.verticalGradient(
+                                    listOf(
+                                        pokemonListEntry.dominantColor,
+                                        Color.LightGray
+                                    )
+                                )
+                            )
                             .padding(4.dp)
                             .clickable {
                                 println("DEBUG: ${pokemonListEntry.name}")
@@ -130,6 +142,12 @@ fun PokemonListScreen(
                                 contentDescription = pokemonListEntry.name,
                                 loading = {
                                     CircularProgressIndicator()
+                                },
+                                onSuccess = { success ->
+                                     onEvent(PokemonListEvent.CalculateDominantColor(
+                                         pokemonListEntry = pokemonListEntry,
+                                         drawable = success.result.drawable
+                                     ))
                                 },
                                 modifier = Modifier
                                     .weight(1f)

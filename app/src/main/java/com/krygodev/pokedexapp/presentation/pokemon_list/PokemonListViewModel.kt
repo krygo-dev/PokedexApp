@@ -1,7 +1,12 @@
 package com.krygodev.pokedexapp.presentation.pokemon_list
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.palette.graphics.Palette
 import com.krygodev.pokedexapp.domain.repository.PokemonRepository
 import com.krygodev.pokedexapp.util.Constants.PAGE_SIZE
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,7 +47,18 @@ class PokemonListViewModel @Inject constructor(
                     searchPokemonList(state.value.searchQuery)
                 }
             }
+            is PokemonListEvent.CalculateDominantColor -> {
+                val color = calculateDominantColor(event.drawable)
+                val index = state.value.pokemonList.indexOf(event.pokemonListEntry)
 
+                _state.value.pokemonList[index].copy(dominantColor = color ?: Color.Black).apply {
+                    _state.update { it.copy(
+                        pokemonList = state.value.pokemonList
+                    ) }
+                }
+
+                println("DEBUG: calculated color $color, pokemon color ${state.value.pokemonList[index].dominantColor}")
+            }
             is PokemonListEvent.LoadPokemonPaginated -> loadPokemonPaginated()
         }
     }
@@ -93,5 +109,14 @@ class PokemonListViewModel @Inject constructor(
         }
 
         _state.update { it.copy(pokemonList = filteredList) }
+    }
+
+    private fun calculateDominantColor(drawable: Drawable): Color? {
+        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+
+        val palette = Palette.from(bmp).generate()
+        return palette.dominantSwatch?.rgb?.let { colorValue ->
+            Color(colorValue)
+        }
     }
 }

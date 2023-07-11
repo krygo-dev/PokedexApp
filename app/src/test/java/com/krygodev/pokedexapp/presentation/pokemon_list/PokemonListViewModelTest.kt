@@ -1,6 +1,7 @@
 package com.krygodev.pokedexapp.presentation.pokemon_list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.ui.graphics.Color
 import com.google.common.truth.Truth.assertThat
 import com.krygodev.pokedexapp.domain.model.PokemonListEntry
 import com.krygodev.pokedexapp.domain.model.PokemonResult
@@ -32,7 +33,7 @@ class PokemonListViewModelTest {
         viewModel = PokemonListViewModel(mockPokemonRepository)
 
         val pokemonList = (0..20).map { index ->
-            PokemonListEntry(name = "Pokemon$index", imageUrl = "www.pokemon.pl/image/$index")
+            PokemonListEntry(name = "Pokemon$index", imageUrl = "www.pokemon.pl/image/$index", number = index, dominantColor = Color.Black)
         }
         pokemonResult = PokemonResult(count = 20, pokemonList = pokemonList)
     }

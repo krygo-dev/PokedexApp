@@ -33,7 +33,12 @@ class PokemonListViewModelTest {
         viewModel = PokemonListViewModel(mockPokemonRepository)
 
         val pokemonList = (0..20).map { index ->
-            PokemonListEntry(name = "Pokemon$index", imageUrl = "www.pokemon.pl/image/$index", number = index, dominantColor = Color.Black)
+            PokemonListEntry(
+                name = "Pokemon$index",
+                imageUrl = "www.pokemon.pl/image/$index",
+                number = index,
+                dominantColor = Color.Black
+            )
         }
         pokemonResult = PokemonResult(count = 20, pokemonList = pokemonList)
     }

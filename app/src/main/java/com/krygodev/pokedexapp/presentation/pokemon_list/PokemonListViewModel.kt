@@ -50,14 +50,13 @@ class PokemonListViewModel @Inject constructor(
             is PokemonListEvent.CalculateDominantColor -> {
                 val color = calculateDominantColor(event.drawable)
                 val index = state.value.pokemonList.indexOf(event.pokemonListEntry)
+                val updatedPokemon = state.value.pokemonList[index].copy(dominantColor = color ?: Color.Black)
+                val mutablePokemonList = state.value.pokemonList.toMutableList()
+                mutablePokemonList[index] = updatedPokemon
 
-                _state.value.pokemonList[index].copy(dominantColor = color ?: Color.Black).apply {
-                    _state.update { it.copy(
-                        pokemonList = state.value.pokemonList
-                    ) }
-                }
-
-                println("DEBUG: calculated color $color, pokemon color ${state.value.pokemonList[index].dominantColor}")
+                _state.update { it.copy(
+                    pokemonList = mutablePokemonList
+                ) }
             }
             is PokemonListEvent.LoadPokemonPaginated -> loadPokemonPaginated()
         }
@@ -105,7 +104,7 @@ class PokemonListViewModel @Inject constructor(
         }
 
         val filteredList = state.value.cachedPokemonList.filter {
-            it.name.contains(query.trim(), ignoreCase = true)
+            it.name.contains(query.trim(), ignoreCase = true) || it.number.toString() == query.trim()
         }
 
         _state.update { it.copy(pokemonList = filteredList) }

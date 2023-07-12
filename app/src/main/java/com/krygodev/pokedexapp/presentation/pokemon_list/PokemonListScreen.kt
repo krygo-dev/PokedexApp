@@ -34,20 +34,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import com.krygodev.pokedexapp.R
 import com.krygodev.pokedexapp.ui.theme.RobotoCondensed
+import com.krygodev.pokedexapp.util.Constants.POKEMON_DETAILS_SCREEN
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
     state: PokemonListState,
-    onEvent: (PokemonListEvent) -> Unit
+    onEvent: (PokemonListEvent) -> Unit,
+    navController: NavController
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -127,7 +131,10 @@ fun PokemonListScreen(
                             )
                             .padding(4.dp)
                             .clickable {
-                                println("DEBUG: ${pokemonListEntry.name}")
+                                println("DEBUG: ${pokemonListEntry.dominantColor.toArgb()}")
+                                navController.navigate(
+                                    "$POKEMON_DETAILS_SCREEN/${pokemonListEntry.dominantColor.toArgb()}/${pokemonListEntry.name}"
+                                )
                             }
                     ) {
                         Column(

@@ -13,8 +13,11 @@ fun PokemonDetailsScreen(
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column {
-            Text(text = "Name: ${state.pokemon}")
+            Text(text = "Name: ${state.pokemonName}")
             Text(text = "Color: ${state.pokemonDominantColor}")
+
+            Text(text = "Loaded: ${state.pokemon?.name}")
+            Text(text = "Error: ${state.loadError}")
         }
     }
 }

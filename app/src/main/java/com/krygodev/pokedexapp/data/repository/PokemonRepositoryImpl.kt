@@ -6,6 +6,7 @@ import com.krygodev.pokedexapp.data.remote.PokemonApi
 import com.krygodev.pokedexapp.domain.model.Pokemon
 import com.krygodev.pokedexapp.domain.model.PokemonResult
 import com.krygodev.pokedexapp.domain.repository.PokemonRepository
+import java.util.Locale
 import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
@@ -26,7 +27,7 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override suspend fun getPokemonDetails(name: String): Result<Pokemon> {
         return try {
-            val response = api.getPokemonDetails(name = name)
+            val response = api.getPokemonDetails(name = name.lowercase(Locale.ROOT))
             Result.success(response.toPokemon())
         } catch (e: Exception) {
             e.printStackTrace()

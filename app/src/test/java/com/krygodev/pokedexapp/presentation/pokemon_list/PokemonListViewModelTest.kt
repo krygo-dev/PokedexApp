@@ -6,9 +6,11 @@ import com.google.common.truth.Truth.assertThat
 import com.krygodev.pokedexapp.domain.model.PokemonListEntry
 import com.krygodev.pokedexapp.domain.model.PokemonResult
 import com.krygodev.pokedexapp.domain.repository.PokemonRepository
+import com.krygodev.pokedexapp.util.Constants.PAGE_SIZE
 import com.krygodev.pokedexapp.util.Constants.UNEXPECTED_ERROR
 import com.krygodev.pokedexapp.util.MainDispatcherRule
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -52,6 +54,7 @@ class PokemonListViewModelTest {
 
         viewModel.onEvent(PokemonListEvent.LoadPokemonPaginated)
 
+        coVerify { mockPokemonRepository.getPokemonList(PAGE_SIZE, prevState.currentPage * PAGE_SIZE) }
         assertThat(viewModel.state.value.pokemonList).isEqualTo(
             prevState.pokemonList + pokemonResult.pokemonList
         )
@@ -64,9 +67,11 @@ class PokemonListViewModelTest {
         coEvery { mockPokemonRepository.getPokemonList(any(), any()) } returns Result.failure(
             Throwable(UNEXPECTED_ERROR)
         )
+        val prevState = viewModel.state.value
 
         viewModel.onEvent(PokemonListEvent.LoadPokemonPaginated)
 
+        coVerify { mockPokemonRepository.getPokemonList(PAGE_SIZE, prevState.currentPage * PAGE_SIZE) }
         assertThat(viewModel.state.value.loadError).isEqualTo(UNEXPECTED_ERROR)
     }
 

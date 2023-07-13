@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth.assertThat
+import com.krygodev.pokedexapp.data.model.pokemon_details.Sprites
 import com.krygodev.pokedexapp.data.model.pokemon_details.Stat
 import com.krygodev.pokedexapp.data.model.pokemon_details.StatX
 import com.krygodev.pokedexapp.data.model.pokemon_details.Type
@@ -79,7 +80,8 @@ class PokemonDetailsViewModelTest {
             types = listOf(Type(slot = 1, type = TypeX("", ""))),
             height = 100,
             weight = 50,
-            stats = listOf(Stat(1, 1, StatX("", "")))
+            stats = listOf(Stat(1, 1, StatX("", ""))),
+            frontSprite = ""
         )
 
         coEvery { mockPokemonRepository.getPokemonDetails(any()) } returns Result.success(testPokemon)

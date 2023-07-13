@@ -30,10 +30,11 @@ fun Result.toPokemonListEntry(): PokemonListEntry {
 fun PokemonDetailsModel.toPokemon(): Pokemon {
     return Pokemon(
         id = id,
-        name = name,
+        name = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
         types = types,
         height = height,
         weight = weight,
-        stats = stats
+        stats = stats,
+        frontSprite = sprites.front_default
     )
 }

@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                         val viewModel = hiltViewModel<PokemonDetailsViewModel>()
                         val state by viewModel.state.collectAsStateWithLifecycle()
 
-                        PokemonDetailsScreen(state = state)
+                        PokemonDetailsScreen(state = state, navController = navController)
                     }
                 }
             }

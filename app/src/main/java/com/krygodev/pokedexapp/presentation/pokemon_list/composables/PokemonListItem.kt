@@ -61,7 +61,12 @@ fun PokemonListItem(
                 model = pokemonEntry.imageUrl,
                 contentDescription = pokemonEntry.name,
                 loading = {
-                    CircularProgressIndicator()
+                    Box(
+                        modifier = Modifier.height(150.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 },
                 onSuccess = { success ->
                     onLoadImageSuccess(success.result.drawable)

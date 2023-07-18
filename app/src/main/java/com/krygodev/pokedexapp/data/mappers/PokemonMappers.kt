@@ -1,10 +1,10 @@
 package com.krygodev.pokedexapp.data.mappers
 
-import androidx.compose.ui.graphics.Color
 import com.krygodev.pokedexapp.data.model.pokemon_details.PokemonDetailsModel
 import com.krygodev.pokedexapp.data.model.pokemon_list.Result
 import com.krygodev.pokedexapp.domain.model.Pokemon
 import com.krygodev.pokedexapp.domain.model.PokemonListEntry
+import com.krygodev.pokedexapp.ui.theme.lightGrey
 import java.util.Locale
 
 fun Result.toPokemonListEntry(): PokemonListEntry {
@@ -23,7 +23,7 @@ fun Result.toPokemonListEntry(): PokemonListEntry {
         name = capitalizedName,
         imageUrl = imageUrl,
         number = number.toInt(),
-        dominantColor = Color.Black
+        dominantColor = lightGrey
     )
 }
 

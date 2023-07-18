@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.krygodev.pokedexapp.domain.repository.PokemonRepository
+import com.krygodev.pokedexapp.ui.theme.lightGrey
 import com.krygodev.pokedexapp.util.Constants.PAGE_SIZE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -50,7 +51,7 @@ class PokemonListViewModel @Inject constructor(
             is PokemonListEvent.CalculateDominantColor -> {
                 val color = calculateDominantColor(event.drawable)
                 val index = state.value.pokemonList.indexOf(event.pokemonListEntry)
-                val updatedPokemon = state.value.pokemonList[index].copy(dominantColor = color ?: Color.Black)
+                val updatedPokemon = state.value.pokemonList[index].copy(dominantColor = color ?: lightGrey)
                 val mutablePokemonList = state.value.pokemonList.toMutableList()
                 mutablePokemonList[index] = updatedPokemon
 

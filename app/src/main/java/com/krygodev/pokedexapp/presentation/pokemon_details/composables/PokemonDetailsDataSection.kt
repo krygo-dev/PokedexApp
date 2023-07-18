@@ -1,11 +1,13 @@
 package com.krygodev.pokedexapp.presentation.pokemon_details.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -33,11 +35,18 @@ fun PokemonDetailsDataSection(
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-        AsyncImage(
-            model = pokemon.frontSprite,
-            contentDescription = "Pokemon front sprite",
-            modifier = Modifier.size(200.dp)
-        )
+        Box(
+            modifier = Modifier
+                .size(220.dp)
+                .clip(CircleShape)
+                .background(Color.White.copy(alpha = 0.3f))
+        ) {
+            AsyncImage(
+                model = pokemon.frontSprite,
+                contentDescription = "Pokemon front sprite",
+                modifier = Modifier.size(200.dp)
+            )
+        }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

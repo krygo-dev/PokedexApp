@@ -26,13 +26,13 @@ fun PokemonDetailsTopSection(
         IconButton(
             onClick = { onBackClick() },
             modifier = Modifier
-                .size(36.dp)
-                .offset(16.dp, 16.dp)
+                .size(44.dp)
+                .offset(8.dp, 8.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Back",
-                tint = Color.Black,
+                tint = Color.White,
             )
         }
     }

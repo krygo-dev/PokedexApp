@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -40,21 +39,21 @@ fun PokemonDetailsDataSection(
             modifier = Modifier.size(200.dp)
         )
 
-        Text(
-            text = "#${pokemon.id} ${pokemon.name}",
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(16.dp)
                 .clip(RoundedCornerShape(size = 40f))
                 .background(Color.White)
                 .padding(16.dp)
         ) {
+            Text(
+                text = "#${pokemon.id} ${pokemon.name}",
+                fontWeight = FontWeight.Bold,
+                fontSize = 30.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
             PokemonDetailsTypeSection(pokemon = pokemon)
             PokemonDetailsWeightAndHeightSection(pokemon = pokemon)
             PokemonDetailsStatSection(pokemon = pokemon)

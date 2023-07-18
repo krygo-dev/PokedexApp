@@ -1,14 +1,10 @@
 package com.krygodev.pokedexapp.presentation.pokemon_list
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,34 +12,32 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.SubcomposeAsyncImage
 import com.krygodev.pokedexapp.R
-import com.krygodev.pokedexapp.ui.theme.RobotoCondensed
+import com.krygodev.pokedexapp.presentation.pokemon_list.composables.PokemonListErrorSection
+import com.krygodev.pokedexapp.presentation.pokemon_list.composables.PokemonListItem
+import com.krygodev.pokedexapp.presentation.pokemon_list.composables.PokemonListSearchError
 import com.krygodev.pokedexapp.util.Constants.POKEMON_DETAILS_SCREEN
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +49,9 @@ fun PokemonListScreen(
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
         Column {
             Image(
@@ -65,42 +61,36 @@ fun PokemonListScreen(
                     .fillMaxWidth()
                     .align(CenterHorizontally)
             )
-            Box(
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = state.searchQuery,
+                onValueChange = { onEvent(PokemonListEvent.SetSearchQuery(it)) },
+                placeholder = { Text(text = "Search..") },
+                maxLines = 1,
+                singleLine = true,
+                textStyle = TextStyle(color = Color.Black),
+                shape = RoundedCornerShape(10.dp),
+                trailingIcon = {
+                    if (state.searchQuery.isNotEmpty()) {
+                        IconButton(
+                            onClick = { onEvent(PokemonListEvent.SetSearchQuery("")) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Clear text field"
+                            )
+                        }
+                    }
+                },
                 modifier = Modifier
+                    .padding(8.dp)
                     .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                TextField(
-                    value = state.searchQuery,
-                    onValueChange = { onEvent(PokemonListEvent.SetSearchQuery(it)) },
-                    placeholder = { Text(text = "Search..") },
-                    maxLines = 1,
-                    singleLine = true,
-                    textStyle = TextStyle(color = Color.Black),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(5.dp, CircleShape)
-                        .background(Color.White, CircleShape)
-                        .padding(horizontal = 20.dp, vertical = 12.dp)
-                )
-            }
-
-            if (state.pokemonList.isEmpty()) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp)
-                ) {
-                    Text(text = "No results to show.")
-                    Text(text = "Try to load more Pokemons before searching.")
-                }
-            }
+            )
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(30.dp)
+                contentPadding = PaddingValues(vertical = 16.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 items(state.pokemonList) { pokemonListEntry ->
 
@@ -114,60 +104,28 @@ fun PokemonListScreen(
                         }
                     }
 
-                    Box(
-                        contentAlignment = Center,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .shadow(5.dp, RoundedCornerShape(10.dp))
-                            .clip(RoundedCornerShape(10.dp))
-                            .aspectRatio(1f)
-                            .background(
-                                Brush.verticalGradient(
-                                    listOf(
-                                        pokemonListEntry.dominantColor,
-                                        Color.LightGray
-                                    )
-                                )
+                    PokemonListItem(
+                        pokemonEntry = pokemonListEntry,
+                        onClick = {
+                            navController.navigate(
+                                "$POKEMON_DETAILS_SCREEN/" +
+                                        "${pokemonListEntry.dominantColor.toArgb()}/" +
+                                        pokemonListEntry.name
                             )
-                            .padding(4.dp)
-                            .clickable {
-                                println("DEBUG: ${pokemonListEntry.dominantColor.toArgb()}")
-                                navController.navigate(
-                                    "$POKEMON_DETAILS_SCREEN/${pokemonListEntry.dominantColor.toArgb()}/${pokemonListEntry.name}"
+                        },
+                        onLoadImageSuccess = {
+                            onEvent(
+                                PokemonListEvent.CalculateDominantColor(
+                                    pokemonListEntry = pokemonListEntry,
+                                    drawable = it
                                 )
-                            }
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = CenterHorizontally
-                        ) {
-                            SubcomposeAsyncImage(
-                                model = pokemonListEntry.imageUrl,
-                                contentDescription = pokemonListEntry.name,
-                                loading = {
-                                    CircularProgressIndicator()
-                                },
-                                onSuccess = { success ->
-                                     onEvent(PokemonListEvent.CalculateDominantColor(
-                                         pokemonListEntry = pokemonListEntry,
-                                         drawable = success.result.drawable
-                                     ))
-                                },
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(150.dp),
-                            )
-                            Text(
-                                text = pokemonListEntry.name,
-                                fontFamily = RobotoCondensed,
-                                fontSize = 20.sp,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
                             )
                         }
-                    }
+                    )
                 }
             }
+
+            if (state.pokemonList.isEmpty() && !state.isLoading) PokemonListSearchError()
 
             Box(
                 contentAlignment = Center,
@@ -177,16 +135,10 @@ fun PokemonListScreen(
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
                 if (!state.loadError.isNullOrEmpty()) {
-                    Column {
-                        Text(state.loadError, color = Color.Red, fontSize = 18.sp)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            onClick = { onEvent(PokemonListEvent.LoadPokemonPaginated) },
-                            modifier = Modifier.align(CenterHorizontally)
-                        ) {
-                            Text(text = "Retry")
-                        }
-                    }
+                    PokemonListErrorSection(
+                        errorText = state.loadError,
+                        onClick = { onEvent(PokemonListEvent.LoadPokemonPaginated) }
+                    )
                 }
             }
         }

@@ -1,9 +1,9 @@
 package com.krygodev.pokedexapp.data.mappers
 
-import androidx.compose.ui.graphics.Color
 import com.google.common.truth.Truth.assertThat
 import com.krygodev.pokedexapp.data.model.pokemon_list.Result
 import com.krygodev.pokedexapp.domain.model.PokemonListEntry
+import com.krygodev.pokedexapp.ui.theme.lightGrey
 import org.junit.Test
 
 
@@ -15,7 +15,7 @@ class PokemonMappersTest {
             name = "Pikachu",
             imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
             number = 25,
-            dominantColor = Color.Black
+            dominantColor = lightGrey
         )
 
         val mapped = testResult.toPokemonListEntry()

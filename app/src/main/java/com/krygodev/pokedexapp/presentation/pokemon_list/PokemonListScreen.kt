@@ -88,7 +88,7 @@ fun PokemonListScreen(
         Column {
             Image(
                 painter = painterResource(id = R.drawable.ic_pokemon_logo),
-                contentDescription = "Pokemon",
+                contentDescription = "Pokemon logo",
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(CenterHorizontally)

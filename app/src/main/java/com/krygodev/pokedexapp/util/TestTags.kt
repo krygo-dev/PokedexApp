@@ -4,4 +4,5 @@ object TestTags {
     const val LAZY_GRID = "grid"
     const val FAB = "fab"
     const val SEARCH_FIELD = "search_field"
+    const val SEARCH_ERROR = "search_error"
 }

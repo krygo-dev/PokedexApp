@@ -12,23 +12,35 @@ import com.krygodev.pokedexapp.repository.test_api_response.validPokemonListResp
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 
-class FakePokemonRepository: PokemonRepository {
+class FakePokemonRepository : PokemonRepository {
 
     private val moshi = Moshi.Builder().build()
-    private val pokemonListAdapter: JsonAdapter<PokemonListModel> = moshi.adapter(PokemonListModel::class.java)
-    private val pokemonDetailsAdapter: JsonAdapter<PokemonDetailsModel> = moshi.adapter(PokemonDetailsModel::class.java)
+    private val pokemonListAdapter: JsonAdapter<PokemonListModel> =
+        moshi.adapter(PokemonListModel::class.java)
+    private val pokemonDetailsAdapter: JsonAdapter<PokemonDetailsModel> =
+        moshi.adapter(PokemonDetailsModel::class.java)
 
     private val pokemonListModel = pokemonListAdapter.fromJson(validPokemonListResponse)
     private val pokemonDetailsModel = pokemonDetailsAdapter.fromJson(validPokemonDetailsResponse)
 
     override suspend fun getPokemonList(limit: Int, offset: Int): Result<PokemonResult> {
-        println("DEBUG: list $pokemonListModel")
-        val result = pokemonListModel?.results?.subList(offset, offset + limit)?.map { it.toPokemonListEntry() }
-        println("DEBUG: result $result")
+        val size = pokemonListModel?.results?.size!!
+        val end = if (offset + limit <= size) offset + limit else size
+
+        if (offset >= size) return Result.success(PokemonResult(
+            count = pokemonListModel.count,
+            pokemonList = emptyList()
+        ))
+
+        val result = pokemonListModel
+            .results
+            .subList(offset, end)
+            .map { it.toPokemonListEntry() }
+
         return Result.success(
             PokemonResult(
-                count = pokemonListModel?.count ?: 0,
-                pokemonList = result ?: emptyList()
+                count = pokemonListModel.count,
+                pokemonList = result
             )
         )
     }

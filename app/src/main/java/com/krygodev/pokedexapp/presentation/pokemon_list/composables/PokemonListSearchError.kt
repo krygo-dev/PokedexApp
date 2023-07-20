@@ -9,8 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.krygodev.pokedexapp.util.TestTags.SEARCH_ERROR
 
 @Composable
 fun PokemonListSearchError() {
@@ -22,7 +24,8 @@ fun PokemonListSearchError() {
     ) {
         Text(
             text = "No results to show.\n Try to load more Pokemons before searching.",
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.testTag(SEARCH_ERROR)
         )
         Spacer(modifier = Modifier.height(64.dp))
     }

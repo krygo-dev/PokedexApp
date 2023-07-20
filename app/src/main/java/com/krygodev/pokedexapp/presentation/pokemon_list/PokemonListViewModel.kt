@@ -107,7 +107,6 @@ class PokemonListViewModel @Inject constructor(
         val filteredList = state.value.cachedPokemonList.filter {
             it.name.contains(query.trim(), ignoreCase = true) || it.number.toString() == query.trim()
         }
-
         _state.update { it.copy(pokemonList = filteredList) }
     }
 

@@ -2,7 +2,7 @@ package com.krygodev.pokedexapp.repository.test_api_response
 
 val validPokemonListResponse = """
     {
-      "count": 1281,
+      "count": 50,
       "next": "https://pokeapi.co/api/v2/pokemon?offset=50&limit=50",
       "previous": null,
       "results": [

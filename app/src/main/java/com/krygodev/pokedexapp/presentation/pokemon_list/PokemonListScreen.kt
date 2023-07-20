@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -47,6 +48,11 @@ import com.krygodev.pokedexapp.presentation.pokemon_list.composables.PokemonList
 import com.krygodev.pokedexapp.presentation.pokemon_list.composables.PokemonListSearchError
 import com.krygodev.pokedexapp.ui.theme.lightGrey
 import com.krygodev.pokedexapp.util.Constants.POKEMON_DETAILS_SCREEN
+import com.krygodev.pokedexapp.util.Constants.POKEMON_LOGO
+import com.krygodev.pokedexapp.util.Constants.SCROLL_TO_TOP
+import com.krygodev.pokedexapp.util.TestTags.FAB
+import com.krygodev.pokedexapp.util.TestTags.LAZY_GRID
+import com.krygodev.pokedexapp.util.TestTags.SEARCH_FIELD
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -71,11 +77,12 @@ fun PokemonListScreen(
                     },
                     contentColor = Color.White,
                     containerColor = lightGrey,
-                    elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 4.dp)
+                    elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 4.dp),
+                    modifier = Modifier.testTag(FAB)
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Scroll to top",
+                        contentDescription = SCROLL_TO_TOP,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -88,7 +95,7 @@ fun PokemonListScreen(
         Column {
             Image(
                 painter = painterResource(id = R.drawable.ic_pokemon_logo),
-                contentDescription = "Pokemon logo",
+                contentDescription = POKEMON_LOGO,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(CenterHorizontally)
@@ -117,12 +124,13 @@ fun PokemonListScreen(
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth()
+                    .testTag(SEARCH_FIELD)
             )
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(vertical = 16.dp),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag(LAZY_GRID),
                 state = gridState
             ) {
                 items(state.pokemonList) { pokemonListEntry ->

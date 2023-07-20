@@ -1,5 +1,9 @@
 package com.krygodev.pokedexapp.repository
 
+import com.krygodev.pokedexapp.data.mappers.toPokemon
+import com.krygodev.pokedexapp.data.mappers.toPokemonListEntry
+import com.krygodev.pokedexapp.data.model.pokemon_details.PokemonDetailsModel
+import com.krygodev.pokedexapp.data.model.pokemon_list.PokemonListModel
 import com.krygodev.pokedexapp.domain.model.Pokemon
 import com.krygodev.pokedexapp.domain.model.PokemonResult
 import com.krygodev.pokedexapp.domain.repository.PokemonRepository
@@ -11,24 +15,25 @@ import com.squareup.moshi.Moshi
 class FakePokemonRepository: PokemonRepository {
 
     private val moshi = Moshi.Builder().build()
-    private val pokemonListAdapter: JsonAdapter<PokemonResult> = moshi.adapter(PokemonResult::class.java)
-    private val pokemonDetailsAdapter: JsonAdapter<Pokemon> = moshi.adapter(Pokemon::class.java)
+    private val pokemonListAdapter: JsonAdapter<PokemonListModel> = moshi.adapter(PokemonListModel::class.java)
+    private val pokemonDetailsAdapter: JsonAdapter<PokemonDetailsModel> = moshi.adapter(PokemonDetailsModel::class.java)
 
-    private val pokemonListResult = pokemonListAdapter.fromJson(validPokemonListResponse)
-    private val pokemonDetailsResult = pokemonDetailsAdapter.fromJson(validPokemonDetailsResponse)
+    private val pokemonListModel = pokemonListAdapter.fromJson(validPokemonListResponse)
+    private val pokemonDetailsModel = pokemonDetailsAdapter.fromJson(validPokemonDetailsResponse)
 
     override suspend fun getPokemonList(limit: Int, offset: Int): Result<PokemonResult> {
-        val result = pokemonListResult?.pokemonList?.subList(offset, offset + limit)
-
+        println("DEBUG: list $pokemonListModel")
+        val result = pokemonListModel?.results?.subList(offset, offset + limit)?.map { it.toPokemonListEntry() }
+        println("DEBUG: result $result")
         return Result.success(
             PokemonResult(
-                count = pokemonListResult?.count ?: 0,
+                count = pokemonListModel?.count ?: 0,
                 pokemonList = result ?: emptyList()
             )
         )
     }
 
     override suspend fun getPokemonDetails(name: String): Result<Pokemon> {
-        return Result.success(pokemonDetailsResult!!)
+        return Result.success(pokemonDetailsModel?.toPokemon()!!)
     }
 }

@@ -15,4 +15,8 @@ object Constants {
 
     // Error
     const val UNEXPECTED_ERROR = "Unexpected error."
+
+    // Content description
+    const val POKEMON_LOGO = "pokemon_logo"
+    const val SCROLL_TO_TOP = "scroll_to_top"
 }

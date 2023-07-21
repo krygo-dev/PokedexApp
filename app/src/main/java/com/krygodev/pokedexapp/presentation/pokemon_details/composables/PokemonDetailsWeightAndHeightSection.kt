@@ -20,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.krygodev.pokedexapp.R
 import com.krygodev.pokedexapp.domain.model.Pokemon
+import com.krygodev.pokedexapp.util.Constants.HEIGHT
+import com.krygodev.pokedexapp.util.Constants.WEIGHT
 import kotlin.math.round
 
 @Composable
@@ -43,7 +45,7 @@ fun PokemonDetailsWeightAndHeightSection(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_weight),
-                contentDescription = "Weight",
+                contentDescription = WEIGHT,
                 tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -66,7 +68,7 @@ fun PokemonDetailsWeightAndHeightSection(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_height),
-                contentDescription = "Height",
+                contentDescription = HEIGHT,
                 tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(8.dp))

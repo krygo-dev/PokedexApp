@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.krygodev.pokedexapp.domain.model.Pokemon
+import com.krygodev.pokedexapp.util.Constants.POKEMON_FRONT_SPRITE
 
 @Composable
 fun PokemonDetailsDataSection(
@@ -43,7 +44,7 @@ fun PokemonDetailsDataSection(
         ) {
             AsyncImage(
                 model = pokemon.frontSprite,
-                contentDescription = "Pokemon front sprite",
+                contentDescription = POKEMON_FRONT_SPRITE,
                 modifier = Modifier.size(200.dp)
             )
         }

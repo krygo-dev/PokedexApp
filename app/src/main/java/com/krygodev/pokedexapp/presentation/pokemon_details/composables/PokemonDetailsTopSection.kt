@@ -12,7 +12,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.krygodev.pokedexapp.util.Constants.BACK
+import com.krygodev.pokedexapp.util.TestTags.BACK_ARROW
 
 @Composable
 fun PokemonDetailsTopSection(
@@ -28,10 +31,11 @@ fun PokemonDetailsTopSection(
             modifier = Modifier
                 .size(44.dp)
                 .offset(8.dp, 8.dp)
+                .testTag(BACK_ARROW)
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = BACK,
                 tint = Color.White,
             )
         }

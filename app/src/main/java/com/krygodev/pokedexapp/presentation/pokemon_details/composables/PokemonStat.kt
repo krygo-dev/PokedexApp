@@ -23,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.krygodev.pokedexapp.data.model.pokemon_details.Stat
+import com.krygodev.pokedexapp.util.TestTags.POKEMON_STAT
 import com.krygodev.pokedexapp.util.parseStatToAbbr
 import com.krygodev.pokedexapp.util.parseStatToColor
 
@@ -63,6 +65,7 @@ fun PokemonStat(
                 Color.LightGray
             }
         )
+        .testTag(POKEMON_STAT)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

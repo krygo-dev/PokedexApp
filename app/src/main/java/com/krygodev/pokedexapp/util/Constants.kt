@@ -19,4 +19,8 @@ object Constants {
     // Content description
     const val POKEMON_LOGO = "pokemon_logo"
     const val SCROLL_TO_TOP = "scroll_to_top"
+    const val BACK = "back"
+    const val POKEMON_FRONT_SPRITE = "pokemon_front_sprite"
+    const val WEIGHT = "weight"
+    const val HEIGHT = "height"
 }

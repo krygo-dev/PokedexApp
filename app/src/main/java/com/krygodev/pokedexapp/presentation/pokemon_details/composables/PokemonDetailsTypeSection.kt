@@ -12,9 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krygodev.pokedexapp.domain.model.Pokemon
+import com.krygodev.pokedexapp.util.TestTags.POKEMON_TYPE
 import com.krygodev.pokedexapp.util.parseTypeToColor
 import java.util.Locale
 
@@ -36,6 +38,7 @@ fun PokemonDetailsTypeSection(
                     .clip(CircleShape)
                     .background(parseTypeToColor(type))
                     .height(35.dp)
+                    .testTag(POKEMON_TYPE)
             ) {
                 Text(
                     text = type.type.name.replaceFirstChar {

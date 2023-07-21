@@ -78,7 +78,6 @@ class PokemonListScreenTest {
         composeRule.onNodeWithContentDescription(POKEMON_LOGO).assertIsDisplayed()
     }
 
-
     @Test
     fun loadPokemonPaginated_pokemonListTilesVisible() {
         val testText = "Bulbasaur"
